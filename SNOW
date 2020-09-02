@@ -1,0 +1,77 @@
+SNOW. The tool is like the conventional enrichment test where a group of genes or proteins (such as a group of gene that are differentially expressed when compared in a case/control study), is analysed to see if they represent any biological process. Network Enrichment tool (also known as SNOW) extracts and evaluates the cooperative behavior of a list of selected proteins/genes using the interactome as scaffold. The difference is that here we introduce the protein-protein interaction data into the functional profiling of genomic data.
+
+Input form
+Steps
+Interpreting the output results
+Worked examples and exercises
+Citing
+Input data
+The input for the Network Enrichment Analysis is a list of genes, transcripts or proteins (as well as for Gene Enrichment Analysis or FatiGO). List should not contain more than 500 elements. If you have a ranked list of the whole genome or proteome, we recommend you to use Gene Set Network Enrichment
+
+Steps
+Define your analysis The first step is to decide the type of analysis you need. The most common case is to study a group of genes of interest (one list) that you have selected for a particular reason, for instance they are the result of a differential expression analysis of a microarray experiment, they are the spots identified as differentiate two samples in a two-dimensional gel electrophoresis or they have an interesting pattern of expression along several samples in a transcriptomic analysis.
+
+
+Select your input list. You can either upload a text file with one column, indicating the list of your genes/transcripts/proteins, or paste directly them in the text box. 
+
+Select your method parameters
+
+Nature of your list. Tell the program whether you submit a list of proteins, transcripts or genes. This is important since a gene can code more than one proteins, and the topology of the interactome can be slightly different.
+Select your specie. Choose the organism that you are studying.
+Select interactome. Choose the interactome you want to use. There are two possibilities: a non-curated interactome (all ppis) or only ppis detected by at least two methods (curated). See SNOW paper for more information about their generation.
+Allow one external intermediate in the subnetwork (yes or not). This option is to indicate how the Minimal Connected Network (MCN) should be generated in the test 2. The MCN is generated calculating the shortest paths among all the pairs of proteins/genes in your list. Only some of the shortest path will be added to the MCN, the ones that join two elements in the list directly (select ´no´) or the ones that join two elements by an external node (select ´yes´). External nodes are genes that are not in your list, but are direct intermediates between them.
+Side of the test. Choose the side for the Kolmogorov-Smirnov (KS) test, which is used to compare the distribution of the topological values between: * Genes of your list versus rest of genes in the interactome (in test 1: role within the interactome) * Genes in the MCN versus random networks (in test 2: list’s cooperative behaviour as a functional module)
+
+
+Job information Give a name to the job and tell the folder where the resulting files should be saved. 
+
+Launch job Press launch button and wait until the analysis is finished. See the state of your job by clicking the jobs button on the top right at the panel menu. A box will appear at the right side listing all your jobs. When the analysis is finished, it will be labelled as "Ready". Then, click on it and you will be redirected to the results page. A normal job may last approximately less than two minutes but the time may vary depending on the size of the list. 
+
+Interpreting the output results
+Remember that Network Enrichment tool performs two different and complementary types of analysis to the list of proteins/genes submitted. This is an important point to interpret the results page. Each analysis is aimed to answer different questions about the role of the proteins form your list in the interactome. See the scheme below.
+
+
+
+Test 1: Evaluates the role of the list within the interactome. Network Enrichment study of the topological role of your genes within the protein interactome. It evaluates the global degree of connections, centrality and clustering by comparing the distributions of nodes of the list versus the complete distribution of these parameters among the interactome.
+
+Test 2: Evaluates the list’s cooperative behaviour as a functional module. Network Enrichment calculates the the minimum network that connects the proteins/genes (MCN, Minimum connected network) in the list. You can allow to introduce or not an external intermediate node (not present in your list) that connects the nodes in your list. The topology of this MCN is evaluated by comparing distributions of node topological parameters of this MCN against a set of MCNs build with lists of random proteins (as large as your list). This approach is similar to other’s tools for functional enrichment analysis such as GO Enrichment with the difference of not having pre-annotated functional modules to evaluate, instead Network Enrichment has to build it, that is the MCN.
+
+The results page contains the following sections:
+
+Job information and input parameters used. A short description of your analysis. 
+
+Results from test 1: Role of list within interactome of reference. Evaluates the role of the list within the interactome. It evaluates the global degree of connections, centrality and clustering by comparing the distributions of nodes of the list versus the complete distribution of these parameters among the interactome. The topological parameters calculated here account for different biological properties. For example, essential genes tend to code for proteins with high betweenness centrality, connection degree but low clustering coefficient, however, genes coding for protein complexes show high clustering coefficient but lower betweenness centrality. In the example seen in the image, all the parameters (betweenness centrality, connection degree but low clustering coefficient) are significantly greater when comparing your proteins to the rest of the interactomne, which tells you that your proteins display a greater centrality, connectivity and clustering than the rest of proteins. This gives you a clue that the proteins in your list can be part of protein complexes that are centrally located in the whole network of protein-protein interactions, and are likely to carry essential functions. 
+
+Results from test 2: Minimal Connected Network topological evaluation. Evaluates the list’s cooperative behaviour as a functional module. Network Enrichment calculates the MCN, the minimum network that connects the proteins/genes in the list using or without using an external nodes (a non-listed protein) to connect nodes in the list. The topology of this network is evaluated by comparing distributions of node parameters of this MCN against a set of random MCNs with same size range. The number of components will tell you whether your MCN is within the 95% confidence interval. If it is below, then your MCN is highly relevant. NOTE that for the same input list, the results may differ slightly (but not significantly) due to that the random MCNs that are used in the comparison are computed on-the-fly and will change from one analysis to another. In the example seen in the image, the number of components is 11, whereas the minimum number of components expected by chance (generating MCN with list of random genes, with the same size as your input list) would be 18. 11 is significantly smaller that 18, indicating that your genes tend to interact between them generating connected subnetworks and, therefore, are indicative of being involved in a common biological process. 
+
+Network viewer: The resulting MCN (from test 2) is presented in a network viewer box. By using the network toolbar, you can select nodes or edges and change its visual properties such as the color, size, shape, etc. For a detailed information on how to use the network viewer, you can have a look at the network viewer documentation. Note that the nodes from your list are rounded and coloured in grey, whereas the external nodes added as intermediate are squares with white color. 
+
+The network viewer is a module of CellMaps, a web platform for visualising biological networks developed in our lab. Then, if you aim to integrate the subnetwork obtained in this analysis with additional data from a more sophisticated and complex study, you can download the subnetwork (result_subnetwork1.sif file), the protein attributes (result_mcn_interactors_list1.txt) and move to CellMaps to continue your analysis.
+
+Interactors information Finally you will see a table with information regarding your genes/transcripts/proteins in the MCN (test 2). The topological values account for the subnetwork represented in the network viewer (that is, the MCN). In the 'list' column you have the information telling you which protein is from your list or is an external intermediate. 
+Worked examples and exercises
+Here are several examples of lists of genes selected to differentiate two samples in different experiments. The description of the experiment is given:
+
+Example number	Dataset	Description
+1	brca1_overexp_up	Upregulated by induction of exogenous BRCA1 in EcR-293 cells
+2	brca1_overexp_dn	Downregulated by induction of exogenous BRCA1 in EcR-293 cells
+3	serum_fibroblast_cellcycle	Cell-cycle dependent genes regulated following exposure to serum in a variety of human fibroblast cell lines
+4	ageing_brain_dn	Age-downregulated in the human frontal cortex
+5	brca1_sw480_up	Up-regulated by infection of human colon adenocarcinoma cells (SW480) with Ad-BRCA1, versus Ad-LacZ control
+6	et743_resist_dn	Down-regulated in two Et-743-resistant cell lines (chondrosarcoma and ovarian carcinoma) compared to sensitive parental lines
+7	hematop_stem_all_up	Up-regulated in populations of human hematopoietic stem cells (CD34+/CD38-/Lin-) from bone marrow, umbilical cord blood, and peripheral blood stem-progenitor cells, compared to the stem cell-depleted population (CD34+/[CD38/Lin++])
+8	oldage_dn	Downregulated in fibroblasts from old individuals, compared to young
+9	brca2_brca1_up	Genes up-regulated in BRCA2-linked breast tumors, relative to BRCA1-linked tumors
+10	hdaci_colon_cur2hrs_up	Upregulated by curcumin at 2 hrs in SW260 colon carcinoma cells
+11	p21_p53_any_dn	Down-regulated at any timepoint (4-24 hrs) following ectopic expression of p21 (CDKN1A) in OvCa cells, p53-dependent
+The SNOW parameters used to perform the analyses were:
+
+Define your input data: One list
+Species: Homo sapiens
+Interactome confidence: Curated
+Allow one external intermediate in the subnetwork: Yes
+Nature of the lists: Genes
+Download the lists and perform your own Network Enrichment analyses choosing same or different parameters.
+
+Citing
+Minguez P, Götz S, Montaner D, Al-Shahrour F, Dopazo J. (2009). SNOW, a web-based tool for the statistical analysis of protein-protein interaction networks. Nucleic Acids Res. 37(Web Server issue):W109-14. pdf - PubMed
